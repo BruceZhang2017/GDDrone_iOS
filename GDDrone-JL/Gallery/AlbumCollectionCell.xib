@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="AlbumCollectionCell" reuseIdentifier="AlbumCollectionCell" id="gTV-IL-0wX" customClass="AlbumCollectionCell">
+            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tBU-Bs-N4k">
+                        <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="album_selected" translatesAutoresizingMaskIntoConstraints="NO" id="Ozo-jg-Z2L">
+                        <rect key="frame" x="73" y="5" width="22" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="22" id="GQf-H8-9ay"/>
+                            <constraint firstAttribute="height" constant="22" id="K8e-NE-HhL"/>
+                        </constraints>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h1W-Cy-2Mw">
+                        <rect key="frame" x="0.0" y="80" width="100" height="20"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nXT-lU-uGB">
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="20"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="albumVideo" translatesAutoresizingMaskIntoConstraints="NO" id="6xK-16-aH8">
+                                <rect key="frame" x="0.0" y="0.0" width="25" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="QPF-UT-N9T"/>
+                                    <constraint firstAttribute="width" constant="25" id="n70-F8-Jxz"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:12" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MlP-ot-Vyy">
+                                <rect key="frame" x="35" y="0.0" width="60" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="7D9-Ui-Ip8"/>
+                                    <constraint firstAttribute="width" constant="60" id="RcM-Na-0gg"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="MlP-ot-Vyy" secondAttribute="bottom" id="27A-5x-o0U"/>
+                            <constraint firstItem="nXT-lU-uGB" firstAttribute="leading" secondItem="h1W-Cy-2Mw" secondAttribute="leading" id="2bE-fa-uPW"/>
+                            <constraint firstAttribute="bottom" secondItem="6xK-16-aH8" secondAttribute="bottom" id="AxG-VD-aIi"/>
+                            <constraint firstItem="6xK-16-aH8" firstAttribute="top" secondItem="h1W-Cy-2Mw" secondAttribute="top" id="MHS-rk-Nqb"/>
+                            <constraint firstAttribute="height" constant="20" id="O1Q-DJ-r9t"/>
+                            <constraint firstItem="MlP-ot-Vyy" firstAttribute="top" secondItem="h1W-Cy-2Mw" secondAttribute="top" id="PdN-6d-rOf"/>
+                            <constraint firstAttribute="trailing" secondItem="nXT-lU-uGB" secondAttribute="trailing" id="Qgm-q4-FfF"/>
+                            <constraint firstItem="6xK-16-aH8" firstAttribute="leading" secondItem="h1W-Cy-2Mw" secondAttribute="leading" id="trW-t5-LqV"/>
+                            <constraint firstItem="nXT-lU-uGB" firstAttribute="top" secondItem="h1W-Cy-2Mw" secondAttribute="top" id="uGi-gF-hXD"/>
+                            <constraint firstAttribute="trailing" secondItem="MlP-ot-Vyy" secondAttribute="trailing" constant="5" id="xRm-fC-1ti"/>
+                            <constraint firstAttribute="bottom" secondItem="nXT-lU-uGB" secondAttribute="bottom" id="xZ5-qg-Mzn"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="tBU-Bs-N4k" secondAttribute="bottom" id="2de-nc-STJ"/>
+                <constraint firstAttribute="trailing" secondItem="tBU-Bs-N4k" secondAttribute="trailing" id="44Z-hC-kUp"/>
+                <constraint firstAttribute="trailing" secondItem="h1W-Cy-2Mw" secondAttribute="trailing" id="78I-7j-HHm"/>
+                <constraint firstItem="Ozo-jg-Z2L" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="TA8-xF-M6V"/>
+                <constraint firstItem="h1W-Cy-2Mw" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="eAQ-iL-z8Q"/>
+                <constraint firstAttribute="trailing" secondItem="Ozo-jg-Z2L" secondAttribute="trailing" constant="5" id="g1K-aC-mXa"/>
+                <constraint firstAttribute="bottom" secondItem="h1W-Cy-2Mw" secondAttribute="bottom" id="laT-1v-gIC"/>
+                <constraint firstItem="tBU-Bs-N4k" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="tSD-SV-b6Y"/>
+                <constraint firstItem="tBU-Bs-N4k" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="zcd-kM-SYY"/>
+            </constraints>
+            <connections>
+                <outlet property="centerImgv" destination="tBU-Bs-N4k" id="AXw-dN-7cw"/>
+                <outlet property="markimgv" destination="Ozo-jg-Z2L" id="F69-1c-YSD"/>
+                <outlet property="videoLabel" destination="MlP-ot-Vyy" id="k8v-Q8-H4f"/>
+                <outlet property="videoView" destination="h1W-Cy-2Mw" id="SpZ-a0-p7k"/>
+            </connections>
+            <point key="canvasLocation" x="-127" y="-36"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="albumVideo" width="18" height="18"/>
+        <image name="album_selected" width="21" height="21"/>
+    </resources>
+</document>

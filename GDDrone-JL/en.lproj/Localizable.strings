@@ -1,0 +1,239 @@
+/* 
+  Localizable.strings
+  DVRunning16
+
+  Created by jieliapp on 2017/6/23.
+  Copyright © 2017年 Zhuhia Jieli Technology. All rights reserved.
+*/
+
+
+//setting
+
+"设置" = "Setting";
+"关于" = "About";
+"APP高级设置" = "APP advanced settings";
+
+"记录仪设置" = "Recorder Set";
+"存储管理" = "Storage management";
+"语言" = "Language";
+"自动下载拍照文件" = "Auto download";
+"保存图片到手机" = "Save to phone";
+"APP高级设置" = "Advanced";
+
+"媒体文件" = "Medias File";
+
+//记录仪设置
+"记录仪名称" = "Logger name";
+"记录仪密码" = "Password";
+"音量调节" = "Volume adjustment";
+"录像录音" = "Have Voice";
+"RTSP播放" = "Play With RTSP";
+"拍照关联视频" = "Capture photo";
+"录像分辨率" = "Video resolution";
+"拍照分辨率" = "Photo resolution";
+"高级设置" = "advanced settings";
+"记录仪存储管理" = "Storage management";
+"名称限制在个字符" = "The name is limited to 1 to 27 characters";
+"保存" = "Save";
+"请输入新密码" = "Input new password";
+"请再次输入新密码" = "Input new password again";
+"时间水印" = "Time watermark";
+"开机提示音" = "Boot tone";
+"图像左右翻转" = "The image is turned around";
+"全屏模式" = "Full Screen Mode (16: 9)";
+"影院宽屏模式" = "Widescreen mode (2.4: 1)";
+"记录仪音量" = "Logger voice";
+"切换到STA模式" = "Change to STA";
+"请输入需要连接的网络信息" = "Input the network information to connect";
+"保存路由器信息到设备端" = "Save the information to the device";
+"路由器名称" = "WiFi Name";
+"密码" = "Password";
+"提交" = "Commit";
+"wifi名不能为空" = "WiFi name can not be NULL";
+"wifi密码长度不正确" = "Password length not right";
+"切换到AP模式" = "Change to AP Mode";
+"该操作会导致设备重启，是否继续" = "Will this cause the device to restart and continue?";
+"录像中不可进行设置" = "Video can not be set!";
+"正在剪切下载是否停止" = "Is cutting the video, is it interrupted?";
+"录制时间不能少于5s" = "Recording time can not be less than 5s";
+"硬解码" = "Hard to decode";
+"软解码" = "Soft decoding";
+
+//新增
+"停车监控" = "Parking monitor";
+"录像时间水印" = "Video watermark";
+"拍照时间水印" = "Photo watermark";
+"关闭" = "Close";
+"低" = "Low";
+"中" = "Middle";
+"高" = "Height";
+"设备处理中" = "Equipment processing";
+"碰撞感应灵敏度" = "Collision sensitivity";
+"设置成功重启APP" = "Set up successfully, please restart APP!";
+"两次密码不一样" = "Password input is inconsistent";
+"错误的格式" = "Wrong format";
+"总容量" = "Total capacity";
+"剩余" = "Surplus";
+"已使用" = "Used";
+"格式化" = "Format";
+"提示" = "Tips";
+"格式化设备TF卡" = "Formatted device TF card?";
+"格式化中" = "Formatting ...";
+"相册" = "Album";
+"设备" = "Device";
+"图片" = "Photo";
+"视频" = "Video";
+"紧急" = "Urgent";
+"前视" = "Front";
+"后视" = "Rear";
+"请先停止录像" = "Please stop the video first";
+"前摄像头" = "Front camera";
+"后摄像头" = "Rear camera";
+"拍照失败" = "Photo failure";
+"恢复默认设置" = "Restore the default settings";
+"正在恢复默认设置" = "The default setting is being restored...";
+"请先选择要分享的文件" = "Please select the files to share first";
+"请在系统相册中分享" = "Please share in the system album";
+"开始使用" = "Go";
+"用户使用协议" = "User usage protocol";
+"生成二维码" = "Create QR code";
+"设备对接" = "Equipment docking";
+"用设备扫码连接路由器" = "Using device QRcode";
+"STA模式" = "STA Mode";
+"上传固件" = "Uploading firmware";
+
+
+//关于页面
+"检查更新" = "Check for updates";
+"意见反馈" = "Feedback";
+"软件版本" = "Software version";
+"固件版本" = "Firmware version";
+"当前为最新版本" = "Current is the latest version！";
+
+
+//手机设置
+"清除缓存" = "Clear cache";
+
+//设备图库
+"设备图库" = "Device gallery";
+"选择" = "Select";
+"该操作会删除所选的设备媒体文件，是否继续？" = "The operation will delete the selected device media file, whether to continue?";
+"正在下载中" = "Downloading ...";
+"文件下载失败了" = "The file download failed！";
+"文件全部下载完毕" = "All the files are downloaded！";
+
+//记录仪
+"当前设备处于USB模式，请稍后连接..." = "The current device is in USB mode. Please connect later ...";
+"TF卡不在线，拍摄失败" = "TF card is not online, shooting failed";
+"请先打开实时流"      =  "Please open the real time flow first";
+"设备暂无媒体文件" = "Equipment No media files";
+//播放器
+"加载中" = "Loading...";
+"播放完毕" = "Play finished!";
+"录制完毕" = "Recording finished";
+"暂无该功能" = "This feature is not available";
+"TF卡不在线" = "TF card is not online";
+"TF卡在线" = "TF card online";
+"开始录制" = "Start recording";
+"该视频为紧急视频，是否继续删除" = "The video is an emergency video, is it going to delete?";
+
+//MainController
+"紧急视频下载中" = "Emergency video download ...";
+"连接已断开" = "Disconnect";
+"是否进行重连" = "Do you want to reconnect?";
+"紧急视频下载完成" = "Emergency video download is complete！";
+"没有文件" = "No Medias Files";
+"这里添加记录仪" = "Add a recorder";
+"您还没添加记录仪" = "No Recoder";
+
+//Delete tips
+"请确认是否删除" = "The operation will delete the file！";
+"确认" = "Confirm";
+"取消" = "Cancel";
+
+//Video Tips
+"实时流预览" = "Live preview";
+"回放" = "Playback";
+"没有该媒体文件" = "NO Medias ~";
+"拖至最右进入预览" = "Most right live";
+
+//imageSave
+"文件下载成功" = "File download Finish!";
+
+//Albums
+"已选" = "Select:";
+"全选" = "All";
+"取消全选" = "Cancel";
+"退出" = "Exist";
+"图片已保存到图库" = "Image saved to gallery";
+"图片保存到图库失败" = "Image saved to gallery failed";
+"视频已保存到图库" = "Video saved to album success";
+"视频保存到图库失败" = "Video saved to album failed";
+
+
+//version Match
+"产品类型不符合" = "Product not match！";
+"固件检测到新版本" = "Updated content";
+"升级" = "Upgrade";
+"正在进行" = "Status:";
+"下载升级包到手机" = "Download upgrade File";
+"上传升级包到摄像机" = "Upload upgrade File to Device";
+"摄像机升级中，请勿断电" = "Do not upgrade in the upgrade...";
+"待摄像机重启后，重启APP" = "After the camera reboot, APP";
+
+
+"MJRefreshHeaderIdleText" = "Pull down to refresh";
+"MJRefreshHeaderPullingText" = "Release to refresh";
+"MJRefreshHeaderRefreshingText" = "Loading...";
+
+"MJRefreshAutoFooterIdleText" = "Tap or pull up to load more";
+"MJRefreshAutoFooterRefreshingText" = "Loading...";
+"MJRefreshAutoFooterNoMoreDataText" = "No more data";
+
+"MJRefreshBackFooterIdleText" = "Pull up to load more";
+"MJRefreshBackFooterPullingText" = "Release to load more.";
+"MJRefreshBackFooterRefreshingText" = "Loading...";
+"MJRefreshBackFooterNoMoreDataText" = "No more data";
+
+"MJRefreshHeaderLastTimeText" = "Last update:";
+"MJRefreshHeaderDateTodayText" = "Today";
+"MJRefreshHeaderNoneLastDateText" = "No record";
+
+//相机参数设置
+"相机设置" = "== Camera Settings ==";
+"亮度" = "Brightness";
+"曝光度" = "Exposure";
+"对比度" = "Contrast";
+"白平衡" = "AWB";
+
+"自动" = "auto";
+"日光" = "sunlight";
+"阴天" = "cloundy";
+"钨丝灯" = "incandescent";//tungsten
+"荧光灯" = "fluorescent";
+
+//settings
+"飞机设置" = "Drone Setttings";
+"帮助" = "Help";
+"指南" = "guide_en";
+"WiFi设置" = "WiFi Settings";
+"恢复出厂设置" = "Factory Reset";
+
+//状态
+"高度"="Height";
+"状态"="Status";
+"在线"="online";
+"离线"="offline";
+"未知"="unkown";
+
+//
+"WiFi未正常连接" =  "WiFi connection invalid！";
+
+"语言" = "English";
+
+"低压禁止录像" = "Low battery,no video recording！";
+
+"内存不足" = "Low memory，please delect part of video or picture!";
+
+//权限说明
+NSPhotoLibraryUsageDescription = "We provide the photo album function in the application, so that you can manage the photos taken, including browsing, deleting, sharing, etc., so we need your authorization to access the album resources.";

@@ -1,0 +1,30 @@
+dependencies: \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Doc/Config.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Doc/Singleton.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Doc/PrefixHeader.pch \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Gallery/BrowseView.m \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Gallery/BrowseView.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Libs/SDWebImage/UIImageView+WebCache.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Libs/SDWebImage/SDWebImageCompat.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Libs/SDWebImage/SDWebImageManager.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Libs/SDWebImage/SDWebImageOperation.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Libs/SDWebImage/SDWebImageDownloader.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Libs/SDWebImage/SDImageCache.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Libs/SDKLib.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Modules/module.modulemap \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLAVIEncapsulator.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLAVIObject.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLGPSPointParam.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLDiscoveryService.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLIntercomer.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLCollisionHandler.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLMovEncapsulator.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLMediaPlayBlack.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLCtpCaChe.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/GCDAsyncUdpSocket.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/GCDAsyncSocket.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLMediaSocketer.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLMediaStreamManager.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLDV16SDK.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/JLCtpSender.h \
+  /Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Framework/LibDV16SDK.framework/Headers/LibDV16SDK.h

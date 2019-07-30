@@ -1,0 +1,1240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+ <key>clang_version</key>
+<string>Apple LLVM version 10.0.0 (clang-1000.11.45.5)</string>
+ <key>files</key>
+ <array>
+  <string>/Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Setting/NBLFileExplorer/Tool/NBLFileTypeManager.m</string>
+ </array>
+ <key>diagnostics</key>
+ <array>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>77</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>77</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>77</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>2a28ba6bccb007acb98aebc0abccdd15</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>4</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>77</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>81</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>81</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>81</integer>
+         <key>col</key><integer>33</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>b08c655d010147ea5672b72ecc1f04bc</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>8</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>81</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>85</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>85</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>85</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>5f98e004e964e197d8f409373a382048</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>12</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>85</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>89</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>89</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>89</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>071f4fd49d420ad70265164f76aa3c9d</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>16</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>89</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>93</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>93</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>93</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>f1539de592b5d2223f759c2987eb2d9c</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>20</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>93</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>97</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>97</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>97</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>d0efa2ad5d9897820648be7bce7b7c72</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>24</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>97</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>101</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>101</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>101</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>169afb88e6b88b6e3aa2388c57045aa5</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>28</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>101</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>105</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>105</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>105</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>6870aeaddc90f70add9d3df8e2236412</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>32</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>105</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>109</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>109</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>109</integer>
+         <key>col</key><integer>33</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>15c75b89558d4faca9f4561d1089ffc7</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>36</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>109</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>113</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>113</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>113</integer>
+         <key>col</key><integer>33</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>fa139ba7819c079a1ea02a12769f15ea</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>40</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>113</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>117</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>117</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>117</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>17601617ae7c3e525af6fa9c3209f667</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>44</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>117</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>121</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>121</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>121</integer>
+         <key>col</key><integer>31</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>2ce36db7f339f85718f02f0a417c6464</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>48</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>121</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>125</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>125</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>125</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>dc2be4cfc4f12b3584f441abcb011052</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>52</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>125</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>129</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>129</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>129</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>b7531254136f4d2c2dbffcc3b482b810</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>56</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>129</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>133</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>133</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>133</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>3b96f4c27faf58610cdc38d229028528</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>60</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>133</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>137</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>137</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>137</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>252dc27dd4bc60a482e20f7f70dfb077</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>64</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>137</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>141</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>141</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>141</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>87e2fcf7e2a301ecbcebd9f0392bf756</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>68</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>141</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>145</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>145</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>145</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>742de89c08c7b86b500942bbd414f501</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>72</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>145</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>149</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>149</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>149</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>65ca40c95953ea89e4a8850e4cad8638</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>76</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>149</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>153</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>153</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>153</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>00edb5064d60c3993d3ca373512670db</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>80</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>153</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>157</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>157</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>157</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>9ff82535493c0134e0eb53dda638f5b0</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>84</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>157</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>161</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>161</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>161</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>bbf6f461adf04477462e8dd7df9df2f3</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>88</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>161</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>165</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>165</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>165</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>a1bfd9a2d59b4811a6d64e6ecbe86926</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>92</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>165</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>169</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>169</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>169</integer>
+         <key>col</key><integer>32</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>00b31d537cc4fc3a34e1e5ed5a1853b0</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>96</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>169</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>173</integer>
+      <key>col</key><integer>13</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>ranges</key>
+     <array>
+       <array>
+        <dict>
+         <key>line</key><integer>173</integer>
+         <key>col</key><integer>27</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+        <dict>
+         <key>line</key><integer>173</integer>
+         <key>col</key><integer>33</integer>
+         <key>file</key><integer>0</integer>
+        </dict>
+       </array>
+     </array>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+     <key>message</key>
+     <string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+    </dict>
+   </array>
+   <key>description</key><string>Value stored to &apos;fileTypeStr&apos; is never read</string>
+   <key>category</key><string>Dead store</string>
+   <key>type</key><string>Dead assignment</string>
+   <key>check_name</key><string>deadcode.DeadStores</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>a5aa88a455f80d5de7fd548056954695</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>searchFileLogoWithFileType:</string>
+  <key>issue_hash_function_offset</key><string>100</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>173</integer>
+   <key>col</key><integer>13</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+ </array>
+</dict>
+</plist>

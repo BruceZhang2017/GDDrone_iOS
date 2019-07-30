@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+ <key>clang_version</key>
+<string>Apple LLVM version 10.0.0 (clang-1000.11.45.5)</string>
+ <key>files</key>
+ <array>
+  <string>/Users/admin/Documents/workspace/xcode/GDDrone-JL/GDDrone-JL/Setting/SettingsViewController.m</string>
+ </array>
+ <key>diagnostics</key>
+ <array>
+  <dict>
+   <key>path</key>
+   <array>
+    <dict>
+     <key>kind</key><string>event</string>
+     <key>location</key>
+     <dict>
+      <key>line</key><integer>65</integer>
+      <key>col</key><integer>1</integer>
+      <key>file</key><integer>0</integer>
+     </dict>
+     <key>depth</key><integer>0</integer>
+     <key>extended_message</key>
+     <string>The &apos;viewWillAppear:&apos; instance method in UIViewController subclass &apos;SettingsViewController&apos; is missing a [super viewWillAppear:] call</string>
+     <key>message</key>
+     <string>The &apos;viewWillAppear:&apos; instance method in UIViewController subclass &apos;SettingsViewController&apos; is missing a [super viewWillAppear:] call</string>
+    </dict>
+   </array>
+   <key>description</key><string>The &apos;viewWillAppear:&apos; instance method in UIViewController subclass &apos;SettingsViewController&apos; is missing a [super viewWillAppear:] call</string>
+   <key>category</key><string>Core Foundation/Objective-C</string>
+   <key>type</key><string>Missing call to superclass</string>
+   <key>check_name</key><string>osx.cocoa.MissingSuperCall</string>
+   <!-- This hash is experimental and going to change! -->
+   <key>issue_hash_content_of_line_in_context</key><string>73c6ec252f3e82077eac3834fdcd63fe</string>
+  <key>issue_context_kind</key><string>Objective-C method</string>
+  <key>issue_context</key><string>viewWillAppear:</string>
+  <key>issue_hash_function_offset</key><string>10</string>
+  <key>location</key>
+  <dict>
+   <key>line</key><integer>65</integer>
+   <key>col</key><integer>1</integer>
+   <key>file</key><integer>0</integer>
+  </dict>
+  </dict>
+ </array>
+</dict>
+</plist>
