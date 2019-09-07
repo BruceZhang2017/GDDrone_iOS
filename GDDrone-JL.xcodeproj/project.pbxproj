@@ -132,8 +132,6 @@
 		842281F921BF4AD200254684 /* UpdateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 842281F121BF4AD200254684 /* UpdateViewController.xib */; };
 		842281FC21BF590F00254684 /* DeviceSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842281FB21BF590F00254684 /* DeviceSettingViewController.m */; };
 		8422820021C2323500254684 /* PDFBrowseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 842281FE21C2323500254684 /* PDFBrowseViewController.m */; };
-		8422820421C2353D00254684 /* guide_en.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8422820221C2353C00254684 /* guide_en.pdf */; };
-		8422820521C2353D00254684 /* guide_zh.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8422820321C2353C00254684 /* guide_zh.pdf */; };
 		8460F94021FB0348005A98FD /* LibDV16SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8480449520F703D90054F099 /* LibDV16SDK.framework */; };
 		84661E0921CCC147008D456C /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 84661E0821CCC147008D456C /* libc++.tbd */; };
 		84661E3221CE3795008D456C /* icon.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 84661E0C21CE3795008D456C /* icon.bundle */; };
@@ -176,12 +174,16 @@
 		84A5804F21DF499A00550ABC /* YHHFtpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A5804E21DF499A00550ABC /* YHHFtpRequest.m */; };
 		84B1A11B21105E5B00F755A5 /* ZWHSettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B1A11721105E5B00F755A5 /* ZWHSettingCell.m */; };
 		84B1A11C21105E5B00F755A5 /* ZWHSettingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B1A11921105E5B00F755A5 /* ZWHSettingTableView.m */; };
+		9A28780A230D412400FA72F6 /* BITSUMISHIPROBOOK_0.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 9A287808230D412400FA72F6 /* BITSUMISHIPROBOOK_0.OTF */; };
+		9A28780B230D412400FA72F6 /* MFYAYUAN_NONCOMMERCIAL-REGULAR_4.OTF in Resources */ = {isa = PBXBuildFile; fileRef = 9A287809230D412400FA72F6 /* MFYAYUAN_NONCOMMERCIAL-REGULAR_4.OTF */; };
 		9A4A011522EC16E700BC7FB0 /* FlyHolverModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A4A011422EC16E700BC7FB0 /* FlyHolverModel.m */; };
 		9A50D00C22E8871A00D2103C /* FlyInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A50D00B22E8871A00D2103C /* FlyInfoModel.m */; };
 		9A50D00F22E97E7900D2103C /* FlyLockModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A50D00E22E97E7900D2103C /* FlyLockModel.m */; };
 		9A50D01222E9947B00D2103C /* FlyStateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A50D01122E9947B00D2103C /* FlyStateModel.m */; };
 		9A50D01522EA011800D2103C /* takeoffOrLandingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A50D01422EA011800D2103C /* takeoffOrLandingModel.m */; };
 		9A50D01B22EB120900D2103C /* FlyFollowModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A50D01A22EB120900D2103C /* FlyFollowModel.m */; };
+		9AA1AC2B22F9BAE90000F6D2 /* guide_en.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9AA1AC2A22F9BAE90000F6D2 /* guide_en.pdf */; };
+		9AA1AC2D22FA5C270000F6D2 /* guide_zh.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9AA1AC2C22FA5C270000F6D2 /* guide_zh.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -421,8 +423,6 @@
 		842281FB21BF590F00254684 /* DeviceSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeviceSettingViewController.m; sourceTree = "<group>"; };
 		842281FE21C2323500254684 /* PDFBrowseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PDFBrowseViewController.m; sourceTree = "<group>"; };
 		842281FF21C2323500254684 /* PDFBrowseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PDFBrowseViewController.h; sourceTree = "<group>"; };
-		8422820221C2353C00254684 /* guide_en.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = guide_en.pdf; sourceTree = "<group>"; };
-		8422820321C2353C00254684 /* guide_zh.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = guide_zh.pdf; sourceTree = "<group>"; };
 		8423B84521E869790088F3CB /* GDDrone-JL.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GDDrone-JL.entitlements"; sourceTree = "<group>"; };
 		84661E0821CCC147008D456C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		84661E0B21CE3795008D456C /* NBLFileExplorer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NBLFileExplorer.h; sourceTree = "<group>"; };
@@ -502,6 +502,8 @@
 		84B1A11721105E5B00F755A5 /* ZWHSettingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZWHSettingCell.m; sourceTree = "<group>"; };
 		84B1A11821105E5B00F755A5 /* ZWHSettingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZWHSettingTableView.h; sourceTree = "<group>"; };
 		84B1A11921105E5B00F755A5 /* ZWHSettingTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZWHSettingTableView.m; sourceTree = "<group>"; };
+		9A287808230D412400FA72F6 /* BITSUMISHIPROBOOK_0.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = BITSUMISHIPROBOOK_0.OTF; sourceTree = "<group>"; };
+		9A287809230D412400FA72F6 /* MFYAYUAN_NONCOMMERCIAL-REGULAR_4.OTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MFYAYUAN_NONCOMMERCIAL-REGULAR_4.OTF"; sourceTree = "<group>"; };
 		9A4A011322EC16E700BC7FB0 /* FlyHolverModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlyHolverModel.h; sourceTree = "<group>"; };
 		9A4A011422EC16E700BC7FB0 /* FlyHolverModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlyHolverModel.m; sourceTree = "<group>"; };
 		9A50D00A22E8871A00D2103C /* FlyInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlyInfoModel.h; sourceTree = "<group>"; };
@@ -514,6 +516,8 @@
 		9A50D01422EA011800D2103C /* takeoffOrLandingModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = takeoffOrLandingModel.m; sourceTree = "<group>"; };
 		9A50D01922EB120900D2103C /* FlyFollowModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FlyFollowModel.h; sourceTree = "<group>"; };
 		9A50D01A22EB120900D2103C /* FlyFollowModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FlyFollowModel.m; sourceTree = "<group>"; };
+		9AA1AC2A22F9BAE90000F6D2 /* guide_en.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = guide_en.pdf; sourceTree = "<group>"; };
+		9AA1AC2C22FA5C270000F6D2 /* guide_zh.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = guide_zh.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1045,8 +1049,10 @@
 		8422820121C2353C00254684 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
-				8422820221C2353C00254684 /* guide_en.pdf */,
-				8422820321C2353C00254684 /* guide_zh.pdf */,
+				9A287808230D412400FA72F6 /* BITSUMISHIPROBOOK_0.OTF */,
+				9A287809230D412400FA72F6 /* MFYAYUAN_NONCOMMERCIAL-REGULAR_4.OTF */,
+				9AA1AC2A22F9BAE90000F6D2 /* guide_en.pdf */,
+				9AA1AC2C22FA5C270000F6D2 /* guide_zh.pdf */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -1418,17 +1424,19 @@
 			files = (
 				842281F521BF4AD200254684 /* StatusCell.xib in Resources */,
 				8480445720F6E9EA0054F099 /* LaunchScreen.storyboard in Resources */,
+				9AA1AC2B22F9BAE90000F6D2 /* guide_en.pdf in Resources */,
 				8480445420F6E9EA0054F099 /* Assets.xcassets in Resources */,
 				8405C6C920FC8D0E0005D6ED /* Localizable.strings in Resources */,
+				9A28780B230D412400FA72F6 /* MFYAYUAN_NONCOMMERCIAL-REGULAR_4.OTF in Resources */,
 				8405C66920FC66050005D6ED /* RennSDK.bundle in Resources */,
 				8405C68A20FC661A0005D6ED /* AlbumTableCell.xib in Resources */,
 				8405C66F20FC66050005D6ED /* ShareSDK.bundle in Resources */,
 				8405C68720FC661A0005D6ED /* AlbumCollectionCell.xib in Resources */,
+				9A28780A230D412400FA72F6 /* BITSUMISHIPROBOOK_0.OTF in Resources */,
 				8405C66E20FC66050005D6ED /* README.txt in Resources */,
 				84661E3221CE3795008D456C /* icon.bundle in Resources */,
+				9AA1AC2D22FA5C270000F6D2 /* guide_zh.pdf in Resources */,
 				8405C66020FC66040005D6ED /* README.md in Resources */,
-				8422820521C2353D00254684 /* guide_zh.pdf in Resources */,
-				8422820421C2353D00254684 /* guide_en.pdf in Resources */,
 				842281F921BF4AD200254684 /* UpdateViewController.xib in Resources */,
 				8405C66C20FC66050005D6ED /* WeiboSDK.bundle in Resources */,
 				8405C64420FC66040005D6ED /* ShareSDKConfigFile.bundle in Resources */,
@@ -1780,6 +1788,25 @@
 					"$(PROJECT_DIR)/GDDrone-JL/ShareSDK/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/GDDrone-JL/Framework",
 				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"sqlite3.0\"",
+					"-framework",
+					"\"AdSupport\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.apexuav.gddrone.gd240hdBin;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1823,6 +1850,25 @@
 					"$(PROJECT_DIR)/GDDrone-JL/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/GDDrone-JL/ShareSDK/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/GDDrone-JL/Framework",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"sqlite3.0\"",
+					"-framework",
+					"\"AdSupport\"",
+					"-framework",
+					"\"CoreLocation\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"UIKit\"",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.apexuav.gddrone.gd240hdBin;
 				PRODUCT_NAME = "$(TARGET_NAME)";

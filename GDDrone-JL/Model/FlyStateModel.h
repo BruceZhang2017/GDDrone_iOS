@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FlyStateModel : NSObject
 
-- (NSDictionary*)getFlyStatusData;
+- (NSDictionary*)getFlyStatusData:(int)distance;
 
 @end
 

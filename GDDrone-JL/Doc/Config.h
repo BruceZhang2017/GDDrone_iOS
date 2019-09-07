@@ -28,7 +28,7 @@
 
 #define kCameraParamMainColor [UIColor colorWithHexString:@"#17191A"]
 #define kCameraParamSliderMinTrackColor kRGBColorInteger(50,50,50)
-#define kRecordTimeColor [UIColor colorWithHexString:@"#FFA500"]
+#define kRecordTimeColor [UIColor colorWithHexString:@"#FF0000"]
 
 #endif /* Config_h */
 

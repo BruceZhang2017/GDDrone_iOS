@@ -21,5 +21,8 @@ singleton_interface(ViewController)
 -(void)resetCameraParam;
 -(void)startLocalRecord;
 -(void)stopLocalRecord;
+
+- (void) sendReadStatus;
+- (void) readStatus;
 @end
 

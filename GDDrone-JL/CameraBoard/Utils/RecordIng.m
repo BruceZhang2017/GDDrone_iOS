@@ -10,6 +10,7 @@
 #import "UIColor+HexColor.h"
 #import <DFUnits/DFUnits.h>
 #import "ViewController.h"
+#import "Masonry.h"
 
 @interface RecordIng(){
 
@@ -29,24 +30,45 @@
     
     if (self) {
         
-        bgImgv = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        bgImgv = [[UIImageView alloc] initWithFrame:CGRectZero];
         bgImgv.backgroundColor = [UIColor blackColor];
         bgImgv.layer.cornerRadius = 2;
         bgImgv.alpha = 0;
         [self addSubview:bgImgv];
         
-        redImgv = [[UIImageView alloc] initWithFrame:CGRectMake(2, frame.size.height/2-10, 20, 20)];
+        [bgImgv mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.mas_right);
+            make.top.equalTo(self.mas_top);
+            make.bottom.equalTo(self.mas_bottom);
+            make.left.equalTo(self.mas_left);
+        }];
+        
+        redImgv = [[UIImageView alloc] initWithFrame:CGRectZero];
         redImgv.image = [UIImage imageNamed:@"gd_redpoint"];
         [self addSubview:redImgv];
+        
+        [redImgv mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.mas_centerY);
+            make.left.equalTo(self.mas_left).offset(2);
+            make.width.mas_equalTo(20);
+            make.height.mas_equalTo(20);
+        }];
+        
         //12
-        titleLab = [[UILabel alloc] initWithFrame:CGRectMake(22+2, bgImgv.frame.size.height/2-10, bgImgv.frame.size.width-18, 20)];
-//        titleLab.backgroundColor = [UIColor grayColor];
-//        titleLab.textColor = [UIColor whiteColor];
+        titleLab = [[UILabel alloc] initWithFrame:CGRectZero];
         titleLab.textColor = kRecordTimeColor;
         titleLab.font = [UIFont systemFontOfSize:13];
-        titleLab.textAlignment = NSTextAlignmentCenter;
+        titleLab.textAlignment = NSTextAlignmentRight;
         titleLab.text = @"00:00";//REC
         [self addSubview:titleLab];
+        
+        [titleLab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(redImgv.mas_right);
+            make.centerY.equalTo(self.mas_centerY);
+            make.height.mas_equalTo(20);
+            make.right.equalTo(self.mas_right).offset(-1);
+        }];
+        
         
         bgImgv.hidden = YES;
         redImgv.hidden = YES;
@@ -77,7 +99,9 @@
     timeInt ++;
     uint32_t k = (uint32_t)timeInt;
     NSString *str = [DFTime stringFromSec:k];
-    
+    if (str.length > 5) {
+        str = [str substringFromIndex:str.length - 5];
+    }
     
     NSLog(@"TimeStr:%@",str);
     titleLab.text = str;

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>GD240 HD</string>
+	<string>X240 GPS</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>6</string>
+	<string>41</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -30,6 +30,11 @@
 	<string>$(NSPhotoLibraryUsageDescription)</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(NSPhotoLibraryUsageDescription)</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>BITSUMISHIPROBOOK_0.OTF</string>
+		<string>MFYAYUAN_NONCOMMERCIAL-REGULAR_4.OTF</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

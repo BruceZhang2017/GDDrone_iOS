@@ -32,6 +32,8 @@
 #import "UserDefaultsUtil.h"
 #import <CoreLocation/CoreLocation.h>
 
+#define kRadianToDegrees(radian) (radian*180.0)/(M_PI)
+
 @interface ViewController ()<JoystickChangeDelegate,CameraParamViewDelegate, UIAlertViewDelegate, CLLocationManagerDelegate>{
     //拍照相关
     NSInteger     rateInter;    //码流
@@ -56,19 +58,25 @@
     NSTimer *flyCtrlTimer;
     NSTimer *flyFollowTimer;
     NSTimer *wifiStatusTimer; // WIFI状态定时器
+    NSTimer *deviceStateTimer;
     
     unsigned char flyType; // 无人机模式
     unsigned char flyStatus; //
-    int latitude;
-    int longitude;
-    
-    BOOL bFlayStatus; // NO: 未起飞 YES: 起飞
-    BOOL bHomeWard;
+    int latitude, longitude; // GPS定位到的坐标
+    int receiveLatitude, receiveLongitude; // 接收到的坐标
     
     CLLocationManager * _locationManager;
     
     BOOL temSwitch; // 开关临时变量
+    BOOL temFlag; // 是否启动了定位
+    BOOL startReadStatus;
     
+    int flyBackCount; // 一键返航执行次数，不超过3次
+    int cancelFlyBackCount; // 取消一键返航执行次数，不超过3次
+    int flyFollowCount; // GPS跟随执行次数，不超过3次
+    int cancelFlyFollowCount; // 取消GPS跟随执行次数，不超过3次
+    int flyUpCount; // 一键起飞执行次数，不超过3次
+    int flyDownCount; // 一键降落执行次数，不超过3次
 }
 
 @property (nonatomic, strong) JLMediaPlayerView *playerView;
@@ -82,13 +90,14 @@
 @property (nonatomic, weak) UIButton *cameraParamBtn;       //参数相机
 @property (nonatomic, weak) UIButton *galleryBtn;           //相册
 @property (nonatomic, weak) UIButton *settingBtn;           //设置
-
+@property (nonatomic, strong) UIImageView * bgImageView;
 @property (nonatomic, weak) UIView *topBarView;
 @property (nonatomic, weak) UIView *topBarView1;
 @property (nonatomic, weak) UIView *topBarView2;
 @property (nonatomic, weak) UIView *topBarView3;
 @property (nonatomic, weak) UIView *topBarView4;
 @property (nonatomic, weak) UIView *topBarView5;
+@property (nonatomic, weak) UIView *topBarView6;
 @property (nonatomic, weak) UIButton *wifiStateBtn;     //wifi状态
 @property (nonatomic, weak) UIImageView *batteryStateView;   //电量
 @property (nonatomic, weak) UILabel *heightLabel;           //到起飞点高度
@@ -107,9 +116,11 @@
 
 @property (nonatomic, weak) UIView *bottomBarView;
 @property (nonatomic, weak) UISwitch *mSwitch;
-@property (nonatomic, weak) UIButton *takeoffOrLandingBtn; //
+@property (nonatomic, weak) UIButton *takeoffOrLandingBtn; // 一键起飞和降落
 @property (nonatomic, weak) UIButton *turnbackBtn; // 一键返航
-@property (nonatomic, weak) UIButton *speedBtn; // 加速度
+@property (nonatomic, weak) UIImageView *compassImageView; // 加速度 -- 南北极
+@property (nonatomic, strong) UIImageView * northSouthImageView;
+@property (nonatomic, strong) UIImageView * northSouthArrowImageView;
 
 @property (nonatomic, strong) UIImage *batteryImg0,*batteryImg1,*batteryImg2,*batteryImg3;
 
@@ -127,6 +138,7 @@
 
 @implementation ViewController
 singleton_implementation(ViewController)
+
 - (void)loadView {
     UIImageView *bgView = [[UIImageView alloc] initWithFrame:kBounds];
 //    bgView.image = [UIImage imageNamed:@"gd_bg"];
@@ -138,6 +150,7 @@ singleton_implementation(ViewController)
 
 - (void)viewDidLoad {
     NSLog(@"viewDidLoad...");
+    temSwitch = true;
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
@@ -169,17 +182,18 @@ singleton_implementation(ViewController)
     [self topBarView3];
     [self topBarView4];
     [self topBarView5];
+    [self topBarView6];
     [self heightLabel];
     [self distanceLabel];
     [self speedHLabel];
     [self speedVLabel];
     [self planetImageView];
     [self planetLabel];
-    [self nLabel];
-    [self eLabel];
-    [self rollLabel];
-    [self patchLabel];
-    [self yawLabel];
+    //[self nLabel];
+    //[self eLabel];
+    //[self rollLabel];
+    //[self patchLabel];
+    //[self yawLabel];
     [self wifiStateBtn];
     [self lockImageView];
     [self batteryStateView];
@@ -219,7 +233,26 @@ singleton_implementation(ViewController)
     self.isLowBattery = NO;
     //
     dispatch_resume(self.tcpConnectTimer);
+}
+
+- (void) sendReadStatus {
+    if (startReadStatus) {
+        return;
+    }
+    startReadStatus = YES;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        deviceStateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(readStatus) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:deviceStateTimer forMode:NSRunLoopCommonModes];
+        [deviceStateTimer fire];
+    });
     
+    
+}
+
+- (void) readStatus {
+    double distance = [self calculateDistance:self->latitude send_lgd:self->longitude receive_ltd:self->receiveLatitude receive_lgd:self->receiveLongitude];
+    NSDictionary * dic = [[FlyStateModel new] getFlyStatusData: abs((int)(distance * 10))];
+    [[JLCtpSender sharedInstanced] dvGenericCommandWith:dic Topic:@"GENERIC_CMD"];
 }
 
 
@@ -323,8 +356,6 @@ singleton_implementation(ViewController)
         
         [self openForntRealStream];
         
-        //初始化设备设置
-       // [self initDeviceSetting];
     });
 }
 
@@ -348,8 +379,7 @@ singleton_implementation(ViewController)
 
 -(void)realStreamOpenedNote:(NSNotification *)notice{
     NSLog(@"realStreamOpenedNote...");
-    //[self initDeviceSetting];
-    self.isStreamOpened = YES;
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{//1
         //初始化设备设置
         [self initDeviceSetting];
@@ -381,7 +411,7 @@ singleton_implementation(ViewController)
     NSLog(@"startFlyFollowTimer...");
     
     if(flyFollowTimer == nil){
-        flyFollowTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(sendFlyFollowData) userInfo:nil repeats:YES];
+        flyFollowTimer = [NSTimer scheduledTimerWithTimeInterval:0.06 target:self selector:@selector(sendFlyFollowData) userInfo:nil repeats:YES];
     }
     [flyFollowTimer fire];
 }
@@ -395,12 +425,12 @@ singleton_implementation(ViewController)
 }
 
 -(void)sendFlyCtrData{
-    NSLog(@"发送遥感数据");
+    //NSLog(@"发送遥感数据");
      [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[FlyCtrlModel sharedInstance] getFlyCtrlData] Topic:@"GENERIC_CMD"];
 }
 
 -(void)sendFlyFollowData {
-    NSLog(@"发送跟随模式");
+    //NSLog(@"发送跟随模式");
     FlyFollowModel *followModel = [[FlyFollowModel alloc] init]; //10000000
     NSDictionary *dic = [followModel getFlyfollowData:latitude longitude:longitude];
     
@@ -439,66 +469,63 @@ singleton_implementation(ViewController)
     
 }
 
-
-
-
 - (void)viewWillAppear:(BOOL)animated{
     self.navigationController.navigationBar.hidden = YES;
     
     [self.recordBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topBarView.mas_bottom).with.offset(10);
-        make.left.equalTo(self.view.mas_left).with.offset(5);
+        make.top.equalTo(self.topBarView.mas_bottom).with.offset(40);
+        make.right.equalTo(self.view.mas_right).with.offset(-15);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
     [self.recordStateView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.recordBtn.mas_right).with.offset(10);
-        make.centerY.equalTo(self.recordBtn.mas_centerY).with.offset(0);
-        make.width.mas_equalTo(100);
+        make.right.equalTo(self.view.mas_right).with.offset(-15);
+        make.top.equalTo(self.topBarView.mas_bottom).with.offset(0);
+        make.width.mas_equalTo(65);
         make.height.mas_equalTo(40);
     }];
     [self.snapshotBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.recordBtn.mas_bottom).with.offset(10);
-        make.left.equalTo(self.view.mas_left).with.offset(5);
+        make.top.equalTo(self.recordBtn.mas_bottom).with.offset(20);
+        make.right.equalTo(self.view.mas_right).with.offset(-15);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
     [self.joystickSwitchBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.snapshotBtn.mas_bottom).with.offset(10);
-        make.left.equalTo(self.view.mas_left).with.offset(5);
+        make.top.equalTo(self.snapshotBtn.mas_bottom).with.offset(20);
+        make.left.equalTo(self.view.mas_left).with.offset(15);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
     [self.moreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topBarView.mas_bottom).with.offset(10);
-        make.right.equalTo(self.view.mas_right).with.offset(-5);
+        make.top.equalTo(self.topBarView.mas_bottom).with.offset(40);
+        make.left.equalTo(self.view.mas_left).with.offset(15);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
     [self.gsensorBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.moreBtn.mas_bottom).with.offset(10);
-        make.right.equalTo(self.view.mas_right).with.offset(-5);
+        make.top.equalTo(self.moreBtn.mas_bottom).with.offset(20);
+        make.left.equalTo(self.view.mas_left).with.offset(15);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
     
     [self.cameraParamBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.gsensorBtn.mas_bottom).with.offset(10);
-        make.right.equalTo(self.view.mas_right).with.offset(-5);
+        make.top.equalTo(self.gsensorBtn.mas_bottom).with.offset(20);
+        make.right.equalTo(self.view.mas_right).with.offset(-15);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
     
     
     [self.galleryBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).with.offset(-10);
-        make.left.equalTo(self.view.mas_left).with.offset(5);
+        make.bottom.equalTo(self.view.mas_bottom).with.offset(-20);
+        make.left.equalTo(self.view.mas_left).with.offset(15);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
     [self.settingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).with.offset(-10);
-        make.right.equalTo(self.view.mas_right).with.offset(-5);
+        make.bottom.equalTo(self.view.mas_bottom).with.offset(-20);
+        make.right.equalTo(self.view.mas_right).with.offset(-15);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
@@ -507,103 +534,102 @@ singleton_implementation(ViewController)
         make.top.equalTo(self.view.mas_top).with.offset(0);
         make.left.equalTo(self.view.mas_left).with.offset(0);
         make.right.equalTo(self.view.mas_right).with.offset(0);
-        make.height.mas_equalTo(48);
+        make.height.mas_equalTo(34);
     }];
     [self.topBarView1 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topBarView.mas_top).with.offset(0);
         make.left.equalTo(self.topBarView.mas_left).with.offset(0);
-        make.width.mas_equalTo([[UIScreen mainScreen] bounds].size.width / 5);
-        make.height.mas_equalTo(48);
+        make.width.mas_equalTo([[UIScreen mainScreen] bounds].size.width / 6);
+        make.height.mas_equalTo(34);
     }];
     [self.topBarView2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topBarView.mas_top).with.offset(0);
         make.left.equalTo(self.topBarView1.mas_right).with.offset(0);
-        make.width.mas_equalTo([[UIScreen mainScreen] bounds].size.width / 5);
-        make.height.mas_equalTo(48);
+        make.width.mas_equalTo([[UIScreen mainScreen] bounds].size.width / 6);
+        make.height.mas_equalTo(34);
     }];
     [self.topBarView3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topBarView.mas_top).with.offset(0);
         make.left.equalTo(self.topBarView2.mas_right).with.offset(0);
-        make.width.mas_equalTo([[UIScreen mainScreen] bounds].size.width / 5);
-        make.height.mas_equalTo(48);
+        make.width.mas_equalTo([[UIScreen mainScreen] bounds].size.width / 6);
+        make.height.mas_equalTo(34);
     }];
     [self.topBarView4 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topBarView.mas_top).with.offset(0);
         make.left.equalTo(self.topBarView3.mas_right).with.offset(0);
-        make.width.mas_equalTo([[UIScreen mainScreen] bounds].size.width / 5);
-        make.height.mas_equalTo(48);
+        make.width.mas_equalTo([[UIScreen mainScreen] bounds].size.width / 6);
+        make.height.mas_equalTo(34);
     }];
     [self.topBarView5 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topBarView.mas_top).with.offset(0);
-        make.right.equalTo(self.topBarView.mas_right).with.offset(0);
+        make.width.mas_equalTo([[UIScreen mainScreen] bounds].size.width / 6);
         make.left.equalTo(self.topBarView4.mas_right).offset(0);
-        make.height.mas_equalTo(48);
+        make.height.mas_equalTo(34);
+    }];
+    [self.topBarView6 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.topBarView.mas_top).with.offset(0);
+        make.right.equalTo(self.topBarView.mas_right).with.offset(0);
+        make.left.equalTo(self.topBarView5.mas_right).offset(0);
+        make.height.mas_equalTo(34);
     }];
     [self.heightLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.topBarView1.mas_left);
-        make.right.equalTo(self.topBarView1.mas_right);
-        make.top.equalTo(self.topBarView1.mas_top).offset(8);
+        make.centerX.equalTo(self.topBarView3.mas_centerX);
+        make.centerY.equalTo(self.topBarView3.mas_centerY);
     }];
     [self.distanceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.topBarView1.mas_left);
-        make.right.equalTo(self.topBarView1.mas_right);
-        make.bottom.equalTo(self.topBarView1.mas_bottom).offset(-8);
+        make.centerX.equalTo(self.topBarView2.mas_centerX);
+        make.centerY.equalTo(self.topBarView2.mas_centerY);
     }];
     [self.speedVLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.topBarView2.mas_left);
-        make.right.equalTo(self.topBarView2.mas_right);
-        make.top.equalTo(self.topBarView2.mas_top).offset(8);
+        make.centerX.equalTo(self.topBarView5.mas_centerX);
+        make.centerY.equalTo(self.topBarView5.mas_centerY);
     }];
     [self.speedHLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.topBarView2.mas_left);
-        make.right.equalTo(self.topBarView2.mas_right);
-        make.bottom.equalTo(self.topBarView2.mas_bottom).offset(-8);
+        make.centerX.equalTo(self.topBarView4.mas_centerX);
+        make.centerY.equalTo(self.topBarView4.mas_centerY);
     }];
     [self.planetImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topBarView3.mas_top).offset(4);
-        make.width.height.mas_equalTo(30);
-        make.centerX.equalTo(self.topBarView3.mas_centerX).offset(- 20);
+        make.centerY.equalTo(self.topBarView1.mas_centerY);
+        make.width.height.mas_equalTo(20);
+        make.centerX.equalTo(self.topBarView1.mas_centerX).offset(-20);
     }];
     [self.planetLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.topBarView3.mas_left);
-        make.centerX.equalTo(self.planetImageView.mas_centerX);
-        make.top.equalTo(self.planetImageView.mas_bottom).offset(2);
-        make.width.mas_equalTo(30);
-        make.height.mas_equalTo(10);
+        make.left.equalTo(self.planetImageView.mas_right).offset(5);
+        make.centerY.equalTo(self.planetImageView.mas_centerY);
     }];
-    [self.nLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topBarView3.mas_top).offset(12);
-        make.left.equalTo(self.planetImageView.mas_right).offset(10);
-        make.width.mas_equalTo(50);
-        make.height.mas_equalTo(10);
-    }];
-    [self.eLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nLabel.mas_bottom).offset(3);
-        make.left.equalTo(self.planetImageView.mas_right).offset(10);
-        make.width.mas_equalTo(50);
-        make.height.mas_equalTo(10);
-    }];
-    [self.rollLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topBarView4.mas_top).offset(2);
-        make.centerX.equalTo(self.topBarView4.mas_centerX);
-        make.width.mas_equalTo(50);
-        make.height.mas_equalTo(10);
-    }];
-    [self.patchLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.rollLabel.mas_bottom).offset(5);
-        make.centerX.equalTo(self.topBarView4.mas_centerX);
-        make.width.mas_equalTo(50);
-        make.height.mas_equalTo(10);
-    }];
-    [self.yawLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.patchLabel.mas_bottom).offset(5);
-        make.centerX.equalTo(self.topBarView4.mas_centerX);
-        make.width.mas_equalTo(50);
-        make.height.mas_equalTo(10);
-    }];
+//    [self.nLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.topBarView3.mas_top).offset(12);
+//        make.left.equalTo(self.planetImageView.mas_right).offset(10);
+//        make.width.mas_equalTo(50);
+//        make.height.mas_equalTo(10);
+//    }];
+//    [self.eLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.nLabel.mas_bottom).offset(3);
+//        make.left.equalTo(self.planetImageView.mas_right).offset(10);
+//        make.width.mas_equalTo(50);
+//        make.height.mas_equalTo(10);
+//    }];
+//    [self.rollLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.topBarView4.mas_top).offset(2);
+//        make.centerX.equalTo(self.topBarView4.mas_centerX);
+//        make.width.mas_equalTo(50);
+//        make.height.mas_equalTo(10);
+//    }];
+//    [self.patchLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.rollLabel.mas_bottom).offset(5);
+//        make.centerX.equalTo(self.topBarView4.mas_centerX);
+//        make.width.mas_equalTo(50);
+//        make.height.mas_equalTo(10);
+//    }];
+//    [self.yawLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.patchLabel.mas_bottom).offset(5);
+//        make.centerX.equalTo(self.topBarView4.mas_centerX);
+//        make.width.mas_equalTo(50);
+//        make.height.mas_equalTo(10);
+//    }];
     [self.lockImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topBarView5.mas_top).offset(2);
-        make.centerX.equalTo(self.topBarView5.mas_centerX);
+        make.centerX.equalTo(self.topBarView6.mas_centerX);
+        make.centerY.equalTo(self.topBarView6.mas_centerY);
         make.width.mas_equalTo(25);
         make.height.mas_equalTo(25);
     }];
@@ -621,41 +647,53 @@ singleton_implementation(ViewController)
     }];
     
     [self.stateLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.topBarView5.mas_bottom).with.offset(-5);
-        make.centerX.equalTo(self.topBarView5.mas_centerX).with.offset(0);
-        make.height.mas_equalTo(10);
+        make.top.equalTo(self.topBarView.mas_bottom).offset(5);
+        make.centerX.equalTo(self.topBarView.mas_centerX).offset(0);
+        make.height.mas_equalTo(20);
     }];
     
     //bottomBarView
     [self.bottomBarView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.mas_bottom).with.offset(-10);
         make.centerX.equalTo(self.view.mas_centerX).with.offset(0);
-        make.width.mas_equalTo(40*4+10*3 + 50);
-        make.height.mas_equalTo(40);
+        make.width.mas_equalTo(40*2 + 55 +20*3 + 50 * 2);
+        make.height.mas_equalTo(60);
     }];
     [self.mSwitch mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.bottomBarView.mas_left).with.offset(0);
+        make.right.equalTo(self.takeoffOrLandingBtn.mas_right).with.offset(-40);
         make.centerY.equalTo(self.bottomBarView.mas_centerY).with.offset(0);
-        //make.width.mas_equalTo(50);
-        //make.height.mas_equalTo(40);
     }];
     [self.takeoffOrLandingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mSwitch.mas_right).with.offset(10);
+        make.right.equalTo(self.compassImageView.mas_left).with.offset(-40);
         make.centerY.equalTo(self.bottomBarView.mas_centerY).with.offset(0);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
     [self.turnbackBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.takeoffOrLandingBtn.mas_right).with.offset(10);
-        make.centerY.equalTo(self.bottomBarView.mas_centerY).with.offset(0);
+        make.left.equalTo(self.compassImageView.mas_right).with.offset(40);
+        make.centerY.equalTo(self.bottomBarView.mas_centerY);
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(40);
     }];
-    [self.speedBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.turnbackBtn.mas_right).with.offset(10);
-        make.centerY.equalTo(self.bottomBarView.mas_centerY).with.offset(0);
-        make.width.mas_equalTo(40);
-        make.height.mas_equalTo(40);
+    [self.compassImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.bottomBarView.mas_centerX);
+        make.centerY.equalTo(self.bottomBarView.mas_centerY);
+        make.width.mas_equalTo(55);
+        make.height.mas_equalTo(55);
+    }];
+    
+    [self.northSouthImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.compassImageView.mas_centerX);
+        make.centerY.equalTo(self.compassImageView.mas_centerY);
+        make.width.mas_equalTo(55);
+        make.height.mas_equalTo(55);
+    }];
+    
+    [self.northSouthArrowImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.northSouthImageView.mas_right).offset(5);
+        make.centerY.equalTo(self.northSouthImageView.mas_centerY);
+        make.width.mas_equalTo(10);
+        make.height.mas_equalTo(10);
     }];
     
     //
@@ -972,7 +1010,8 @@ BOOL isJoystickSwitchON;
 -(void)joystickSwitchBtnClickAction{
     isJoystickSwitchON = !isJoystickSwitchON;
     if(isJoystickSwitchON){
-        [_mSwitch setHidden:NO];
+       // [_mSwitch setHidden:NO];
+        temSwitch = false;
         [_joystickSwitchBtn setImage:[UIImage imageNamed:@"gd_joystick_switch_sel"] forState:UIControlStateNormal];
         //开启控制Timer
         [self removeFlyFollowTimer];
@@ -980,7 +1019,8 @@ BOOL isJoystickSwitchON;
         _oilJoystickView.hidden = NO;
         _directionJoystickView.hidden = NO;
     }else{
-        [_mSwitch setHidden:YES];
+       // [_mSwitch setHidden:YES];
+        temSwitch = true;
         [_joystickSwitchBtn setImage:[UIImage imageNamed:@"gd_joystick_switch"] forState:UIControlStateNormal];
         [self removeFlyCtrlTimer];
         _oilJoystickView.hidden = YES;
@@ -989,15 +1029,29 @@ BOOL isJoystickSwitchON;
         [self closeGsensor];
         
         [_mSwitch setOn:false];
-        if (_moreBtn.isSelected) {
-            [_moreBtn setSelected:NO];
-            [_locationManager stopUpdatingLocation];
-        }
-        bFlayStatus = NO;
-        [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[takeoffOrLandingModel new] takeoffOrLandingData: 0x04] Topic:@"GENERIC_CMD"];
-        [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff"] forState:UIControlStateNormal];
-        [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff_h"] forState:UIControlStateHighlighted];
-        bHomeWard = NO;
+       
+        [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[FlyHolverModel new] getFlyHolverData] Topic:@"GENERIC_CMD"];
+    }
+}
+
+-(void)joystickSwitchBtnClickAction2{
+    isJoystickSwitchON = !isJoystickSwitchON;
+    if(isJoystickSwitchON){
+        // [_mSwitch setHidden:NO];
+        temSwitch = false;
+        //开启控制Timer
+        [self removeFlyFollowTimer];
+        [self startFlyCtrlTimer];
+    }else{
+        // [_mSwitch setHidden:YES];
+        temSwitch = true;
+        //[self removeFlyCtrlTimer];
+        
+        [self closeGsensor];
+        
+        [_mSwitch setOn:false];
+        
+        [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[FlyHolverModel new] getFlyHolverData] Topic:@"GENERIC_CMD"];
     }
 }
 
@@ -1014,7 +1068,7 @@ BOOL isJoystickSwitchON;
 #pragma mark 录像状态
 -(RecordIng *)recordStateView{
     if(_recordStateView == nil){
-        RecordIng * recState = [[RecordIng alloc] initWithFrame:CGRectMake(60, 60, 60, 40)];
+        RecordIng * recState = [[RecordIng alloc] initWithFrame: CGRectZero];
         [self.view addSubview:recState];
         _recordStateView = recState;
     }
@@ -1038,7 +1092,7 @@ BOOL isJoystickSwitchON;
 }
 
 #pragma mark --更多
--(UIButton *)moreBtn{
+-(UIButton *)moreBtn {
     if(_moreBtn == nil){
         UIButton * btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:@"follow"] forState:UIControlStateNormal];
@@ -1052,17 +1106,17 @@ BOOL isJoystickSwitchON;
 
 BOOL isAllViewHide = NO;
 -(void)moreBtnAction {
-    
-    if (_moreBtn.isSelected) {
+    if (flyType == 0x06) {
+        cancelFlyFollowCount++;
         [self removeFlyFollowTimer];
-        if (_mSwitch.isHidden == false) {
-            [self joystickSwitchBtnClickAction];
+        if (temSwitch == false) {
+            [self joystickSwitchBtnClickAction2];
         }
-        [_moreBtn setSelected:NO];
-        [_locationManager stopUpdatingLocation];
+        [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[FlyHolverModel new] getFlyHolverData] Topic:@"GENERIC_CMD"];
     } else {
-        [_moreBtn setSelected:YES];
-        [self startLocation];
+        flyFollowCount++;
+        isJoystickSwitchON = NO;
+        [self startFlyFollowTimer]; // 启动跟随定时器
     }
     
 }
@@ -1187,10 +1241,18 @@ BOOL isCameraParamBtnOn;
 -(UIView *)topBarView{
     if(_topBarView == nil){
         UIView *uiview = [[UIView alloc] init];
-        [uiview setBackgroundColor:[[UIColor grayColor] colorWithAlphaComponent:0.5]];
-       // [uiview setBackgroundColor:[UIColor colorWithHexString:@"#323232"]];
         [self.view addSubview:uiview];
         _topBarView = uiview;
+        _bgImageView = [[UIImageView alloc] init];
+        _bgImageView.image = [UIImage imageNamed:@"bg021"];
+        [_topBarView addSubview:_bgImageView];
+        
+        [_bgImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.topBarView.mas_left);
+            make.top.equalTo(uiview.mas_top);
+            make.right.equalTo(uiview.mas_right);
+            make.bottom.equalTo(uiview.mas_bottom);
+        }];
     }
     return _topBarView;
 }
@@ -1240,6 +1302,15 @@ BOOL isCameraParamBtnOn;
     return _topBarView5;
 }
 
+-(UIView *)topBarView6{
+    if(_topBarView6 == nil){
+        UIView *uiview = [[UIView alloc] init];
+        [_topBarView addSubview:uiview];
+        _topBarView6 = uiview;
+    }
+    return _topBarView6;
+}
+
 #pragma mark --wifi状态
 -(UIButton *)wifiStateBtn{
     if(_wifiStateBtn == nil){
@@ -1271,68 +1342,96 @@ BOOL isCameraParamBtnOn;
 -(UILabel*)heightLabel{
     if(_heightLabel == nil){
         UILabel *lab = [[UILabel alloc] init];
-        NSString *str = [NSString stringWithFormat:@"%@: 0m",kDV_TXT(@"高度")];
-        [lab setText:str];
-        [lab setTextAlignment:NSTextAlignmentCenter];
-        //[lab setAdjustsFontSizeToFitWidth:YES];
-        [lab setTextColor:[UIColor whiteColor]];
-        [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView1 addSubview:lab];
+        [self.topBarView3 addSubview:lab];
         _heightLabel = lab;
+        [self refreshHeight:0];
     }
     return _heightLabel;
+}
+
+- (void)refreshHeight: (int) value {
+    UIFont *font1 = [UIFont fontWithName:@"MF YaYuan (Noncommercial)" size:20];
+    UIFont *font2 = [UIFont fontWithName:@"Bitsumishi Pro" size:25];
+    UIFont *font3 = [UIFont fontWithName:@"MF YaYuan (Noncommercial)" size:12];
+    NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] init];
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:@"H " attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:159 / 255.f green:159 / 255.f blue:160 / 255.f alpha:1], NSFontAttributeName: font1}]];
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%.1f", value * 0.1f] attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:201 / 255.f green:201 / 255.f blue:202 / 255.f alpha:1], NSFontAttributeName: font2}]];
+    
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:@" m" attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:160 / 255.f green:160 / 255.f blue:160 / 255.f alpha:1], NSFontAttributeName: font3}]];
+    _heightLabel.attributedText = attrString;
 }
 
 -(UILabel*)distanceLabel{
     if(_distanceLabel == nil){
         UILabel *lab = [[UILabel alloc] init];
-        NSString *str = [NSString stringWithFormat:@"%@: 0m",kDV_TXT(@"distance")];
-        [lab setText:str];
-        [lab setTextAlignment:NSTextAlignmentCenter];
-        //[lab setAdjustsFontSizeToFitWidth:YES];
-        [lab setTextColor:[UIColor whiteColor]];
-        [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView1 addSubview:lab];
+        [self.topBarView2 addSubview:lab];
         _distanceLabel = lab;
+        [self refreshDistance:0];
     }
     return _distanceLabel;
+}
+
+- (void)refreshDistance: (int) value {
+    UIFont *font1 = [UIFont fontWithName:@"MF YaYuan (Noncommercial)" size:20];
+    UIFont *font2 = [UIFont fontWithName:@"Bitsumishi Pro" size:25];
+    UIFont *font3 = [UIFont fontWithName:@"MF YaYuan (Noncommercial)" size:12];
+    NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] init];
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:@"D " attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:159 / 255.f green:159 / 255.f blue:160 / 255.f alpha:1], NSFontAttributeName: font1}]];
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%.1f", MAX(value, 0) * 0.1f] attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:201 / 255.f green:201 / 255.f blue:202 / 255.f alpha:1], NSFontAttributeName: font2}]];
+    
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:@" m" attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:159 / 255.f green:159 / 255.f blue:160 / 255.f alpha:1], NSFontAttributeName: font3}]];
+    _distanceLabel.attributedText = attrString;
 }
 
 -(UILabel*)speedVLabel{
     if(_speedVLabel == nil){
         UILabel *lab = [[UILabel alloc] init];
-        NSString *str = [NSString stringWithFormat:@"%@: 0m/s",kDV_TXT(@"Speed V")];
-        [lab setText:str];
-        [lab setTextAlignment:NSTextAlignmentCenter];
-        //[lab setAdjustsFontSizeToFitWidth:YES];
-        [lab setTextColor:[UIColor whiteColor]];
-        [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView2 addSubview:lab];
+        [self.topBarView5 addSubview:lab];
         _speedVLabel = lab;
+        [self refreshSpeedV:0];
     }
     return _speedVLabel;
+}
+
+- (void)refreshSpeedV: (int) value {
+    UIFont *font1 = [UIFont fontWithName:@"MF YaYuan (Noncommercial)" size:20];
+    UIFont *font2 = [UIFont fontWithName:@"Bitsumishi Pro" size:25];
+    UIFont *font3 = [UIFont fontWithName:@"MF YaYuan (Noncommercial)" size:12];
+    NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] init];
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:@"V.S " attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:159 / 255.f green:159 / 255.f blue:160 / 255.f alpha:1], NSFontAttributeName: font1}]];
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%.1f", value * 0.1f] attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:201 / 255.f green:201 / 255.f blue:202 / 255.f alpha:1], NSFontAttributeName: font2}]];
+    
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:@" m/s" attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:159 / 255.f green:159 / 255.f blue:160 / 255.f alpha:1], NSFontAttributeName: font3}]];
+    _speedVLabel.attributedText = attrString;
 }
 
 -(UILabel*)speedHLabel{
     if(_speedHLabel == nil){
         UILabel *lab = [[UILabel alloc] init];
-        NSString *str = [NSString stringWithFormat:@"%@: 0m/s",kDV_TXT(@"Speed H")];
-        [lab setText:str];
-        [lab setTextAlignment:NSTextAlignmentCenter];
-        //[lab setAdjustsFontSizeToFitWidth:YES];
-        [lab setTextColor:[UIColor whiteColor]];
-        [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView2 addSubview:lab];
+        [self.topBarView4 addSubview:lab];
         _speedHLabel = lab;
+        [self refreshSpeedH:0];
     }
     return _speedHLabel;
+}
+
+- (void)refreshSpeedH: (int) value {
+    UIFont *font1 = [UIFont fontWithName:@"MF YaYuan (Noncommercial)" size:20];
+    UIFont *font2 = [UIFont fontWithName:@"Bitsumishi Pro" size:25];
+    UIFont *font3 = [UIFont fontWithName:@"MF YaYuan (Noncommercial)" size:12];
+    NSMutableAttributedString * attrString = [[NSMutableAttributedString alloc] init];
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:@"H.S " attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:159 / 255.f green:159 / 255.f blue:160 / 255.f alpha:1], NSFontAttributeName: font1}]];
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%.1f", value * 0.1f * 3.6f] attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:201 / 255.f green:201 / 255.f blue:202 / 255.f alpha:1], NSFontAttributeName: font2}]];
+    
+    [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:@" km/h" attributes:@{NSForegroundColorAttributeName: [[UIColor alloc] initWithRed:159 / 255.f green:159 / 255.f blue:160 / 255.f alpha:1], NSFontAttributeName: font3}]];
+    _speedHLabel.attributedText = attrString;
 }
 
 -(UIImageView*)planetImageView{
     if(_planetImageView == nil){
         UIImageView *imageView = [[UIImageView alloc] init];
-        [imageView setImage:[UIImage imageNamed:@"weixing"]];
-        [self.topBarView3 addSubview:imageView];
+        [imageView setImage:[UIImage imageNamed:@"卫星"]];
+        [self.topBarView1 addSubview:imageView];
         _planetImageView = imageView;
     }
     return _planetImageView;
@@ -1340,14 +1439,13 @@ BOOL isCameraParamBtnOn;
 
 -(UILabel*)planetLabel{
     if(_planetLabel == nil){
+        UIFont *font2 = [UIFont fontWithName:@"Bitsumishi Pro" size:25];
         UILabel *lab = [[UILabel alloc] init];
         NSString *str = @"0";
         [lab setText:str];
-        [lab setTextAlignment:NSTextAlignmentCenter];
-        //[lab setAdjustsFontSizeToFitWidth:YES];
-        [lab setTextColor:[UIColor whiteColor]];
-        [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView3 addSubview:lab];
+        [lab setTextColor:[[UIColor alloc] initWithRed:201 / 255.f green:201 / 255.f blue:202 / 255.f alpha:1]];
+        [lab setFont:font2];
+        [self.topBarView1 addSubview:lab];
         _planetLabel = lab;
     }
     return _planetLabel;
@@ -1362,7 +1460,7 @@ BOOL isCameraParamBtnOn;
         //[lab setAdjustsFontSizeToFitWidth:YES];
         [lab setTextColor:[UIColor whiteColor]];
         [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView3 addSubview:lab];
+        //[self.topBarView3 addSubview:lab];
         _nLabel = lab;
     }
     return _nLabel;
@@ -1377,7 +1475,7 @@ BOOL isCameraParamBtnOn;
         //[lab setAdjustsFontSizeToFitWidth:YES];
         [lab setTextColor:[UIColor whiteColor]];
         [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView3 addSubview:lab];
+        //[self.topBarView3 addSubview:lab];
         _eLabel = lab;
     }
     return _eLabel;
@@ -1386,13 +1484,6 @@ BOOL isCameraParamBtnOn;
 -(UILabel*)rollLabel{
     if(_rollLabel == nil){
         UILabel *lab = [[UILabel alloc] init];
-        NSString *str = [NSString stringWithFormat:@"%@: 0.0",kDV_TXT(@"Roll")];
-        [lab setText:str];
-        [lab setTextAlignment:NSTextAlignmentCenter];
-        //[lab setAdjustsFontSizeToFitWidth:YES];
-        [lab setTextColor:[UIColor whiteColor]];
-        [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView4 addSubview:lab];
         _rollLabel = lab;
     }
     return _rollLabel;
@@ -1401,13 +1492,6 @@ BOOL isCameraParamBtnOn;
 -(UILabel*)patchLabel{
     if(_patchLabel == nil){
         UILabel *lab = [[UILabel alloc] init];
-        NSString *str = [NSString stringWithFormat:@"%@: 0.0",kDV_TXT(@"Patch")];
-        [lab setText:str];
-        [lab setTextAlignment:NSTextAlignmentCenter];
-        //[lab setAdjustsFontSizeToFitWidth:YES];
-        [lab setTextColor:[UIColor whiteColor]];
-        [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView4 addSubview:lab];
         _patchLabel = lab;
     }
     return _patchLabel;
@@ -1426,13 +1510,6 @@ BOOL isCameraParamBtnOn;
 -(UILabel*)yawLabel{
     if(_yawLabel == nil){
         UILabel *lab = [[UILabel alloc] init];
-        NSString *str = [NSString stringWithFormat:@"%@: 0.0",kDV_TXT(@"Yaw")];
-        [lab setText:str];
-        [lab setTextAlignment:NSTextAlignmentCenter];
-        //[lab setAdjustsFontSizeToFitWidth:YES];
-        [lab setTextColor:[UIColor whiteColor]];
-        [lab setFont:[UIFont systemFontOfSize:8]];
-        [self.topBarView4 addSubview:lab];
         _yawLabel = lab;
     }
     return _yawLabel;
@@ -1442,15 +1519,9 @@ BOOL isCameraParamBtnOn;
 -(UILabel*)stateLabel{
     if(_stateLabel == nil){
         UILabel *lab = [[UILabel alloc] init];
-        [lab setTextAlignment:NSTextAlignmentLeft];
-        [lab setAdjustsFontSizeToFitWidth:YES];
         [lab setTextColor:[UIColor whiteColor]];
-        [lab setFont:[UIFont systemFontOfSize:8]];
-        //点击链接wifi
-        lab.userInteractionEnabled = YES;
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(wifiBtnClickAction)];
-        [lab addGestureRecognizer:tapGesture];
-        
+        [lab setFont:[UIFont systemFontOfSize:16]];
+        [lab setHidden:YES];
         [self.topBarView5 addSubview:lab];
         _stateLabel = lab;
     }
@@ -1503,16 +1574,10 @@ BOOL isCameraParamBtnOn;
 }
 
 -(void)takeoffOrLandingClick:(UIButton *) sender {
-    if (bFlayStatus == NO) {
-        bFlayStatus = YES;
-        [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[takeoffOrLandingModel new] takeoffOrLandingData: 0x01] Topic:@"GENERIC_CMD"];
-        [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff_landing"] forState:UIControlStateNormal];
-        [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff_landing_h"] forState:UIControlStateHighlighted];
-    } else {
-        bFlayStatus = NO;
+    if (flyStatus == 0x02) {
         [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[takeoffOrLandingModel new] takeoffOrLandingData: 0x02] Topic:@"GENERIC_CMD"];
-        [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff"] forState:UIControlStateNormal];
-        [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff_h"] forState:UIControlStateHighlighted];
+    } else {
+        [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[takeoffOrLandingModel new] takeoffOrLandingData: 0x01] Topic:@"GENERIC_CMD"];
     }
 }
 
@@ -1521,74 +1586,51 @@ BOOL isCameraParamBtnOn;
     if(_turnbackBtn == nil){
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         [btn setImage:[UIImage imageNamed:@"gd_voyage_home"] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:@"gd_voyage_home_h"] forState:UIControlStateHighlighted];
+        [btn setImage:[UIImage imageNamed:@"gd_voyage_home_h"] forState:UIControlStateSelected];
         [btn addTarget:self action:@selector(voyageHomeBtnClick) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomBarView addSubview:btn];
         _turnbackBtn = btn;
     }
     return _turnbackBtn;
 }
-
--(void)voyageHomeBtnClick{
-    if (bHomeWard) {
-        bHomeWard = NO;
+// 一键返航 / 取消一键返航
+-(void)voyageHomeBtnClick {
+    if (flyType == 0x04) {
+        cancelFlyBackCount++;
+        // 发送悬停
         [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[FlyHolverModel new] getFlyHolverData] Topic:@"GENERIC_CMD"];
     } else {
-        bHomeWard = YES;
+        flyBackCount++;
+        // 发送一键返航指令
         [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[takeoffOrLandingModel new] takeoffOrLandingData: 0x08] Topic:@"GENERIC_CMD"];
     }
 }
 
 #pragma mark --speedBtn
 NSString  *speedLevelValue = kSpeedLevelValueThree;
--(UIButton*)speedBtn{
-    if(_speedBtn == nil){
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+-(UIImageView*)speedBtn{
+    if(_compassImageView == nil){
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        [imageView setImage:[UIImage imageNamed:@"定位"]];
+        [self.bottomBarView addSubview:imageView];
+        _compassImageView = imageView;
         
-        speedLevelValue = [[NSUserDefaults standardUserDefaults] stringForKey:kSpeedLevelKey];
-        if([kSpeedLevelValueOne isEqual:speedLevelValue]){
-            [btn setImage:[UIImage imageNamed:@"gd_speed_l"] forState:UIControlStateNormal];
-        }else if([kSpeedLevelValueTwo isEqual:speedLevelValue]){
-            [btn setImage:[UIImage imageNamed:@"gd_speed_m"] forState:UIControlStateNormal];
-        }else if([kSpeedLevelValueThree isEqual:speedLevelValue]){
-            [btn setImage:[UIImage imageNamed:@"gd_speed_h"] forState:UIControlStateNormal];
-        }else{
-            [btn setImage:[UIImage imageNamed:@"gd_speed_h"] forState:UIControlStateNormal];
-            [[NSUserDefaults standardUserDefaults] setObject:kSpeedLevelValueThree forKey:kSpeedLevelKey];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
+        _northSouthImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _northSouthImageView.transform = CGAffineTransformMakeRotation(M_PI * 3 / 2);
+        [imageView addSubview:_northSouthImageView];
         
-        [btn addTarget:self action:@selector(speedBtnClick) forControlEvents:UIControlEventTouchUpInside];
-        [self.bottomBarView addSubview:btn];
-        _speedBtn = btn;
+        _northSouthArrowImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+        _northSouthArrowImageView.image = [UIImage imageNamed:@"箭头"];
+        _northSouthArrowImageView.transform = CGAffineTransformMakeRotation(-M_PI * 3 / 2);
+        [_northSouthImageView addSubview:_northSouthArrowImageView];
     }
-    return _speedBtn;
-}
-
--(void)speedBtnClick{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    speedLevelValue = [userDefaults objectForKey:kSpeedLevelKey];
-    if( [kSpeedLevelValueOne isEqualToString:speedLevelValue]){
-        [_speedBtn setImage:[UIImage imageNamed:@"gd_speed_m"] forState:UIControlStateNormal];
-        speedLevelValue = kSpeedLevelValueTwo;
-        //[[FlyCtrlModel sharedInstance] setSpeedMiddle];
-    }else if([kSpeedLevelValueTwo isEqualToString:speedLevelValue]){
-        [_speedBtn setImage:[UIImage imageNamed:@"gd_speed_h"] forState:UIControlStateNormal];
-        speedLevelValue = kSpeedLevelValueThree;
-        //[[FlyCtrlModel sharedInstance] setSpeedHigh];
-    }else if([kSpeedLevelValueThree isEqualToString:speedLevelValue]){
-        [_speedBtn setImage:[UIImage imageNamed:@"gd_speed_l"] forState:UIControlStateNormal];
-        speedLevelValue = kSpeedLevelValueOne;
-        //[[FlyCtrlModel sharedInstance] setSpeedLow];
-    }
-    [userDefaults setObject:speedLevelValue forKey:kSpeedLevelKey];
-    AudioServicesPlaySystemSound(1519);
+    return _compassImageView;
 }
 
 
 -(JoystickView*)oilJoystickView{
     if(_oilJoystickView == nil){
-        JoystickView * joystickView = [[JoystickView alloc] initWithFrame:CGRectMake(10, kHeight-250-10, 250, 250)];
+        JoystickView * joystickView = [[JoystickView alloc] initWithFrame:CGRectMake(30, kHeight-250-60, 250, 250)];
        // joystickView.backgroundColor = [UIColor darkGrayColor];
         [joystickView setJoystickTag:kOilJoystick];
         [joystickView setPanelBackgroundImage:[UIImage imageNamed:@"JoystickView_OilPanel"]];
@@ -1601,7 +1643,7 @@ NSString  *speedLevelValue = kSpeedLevelValueThree;
 
 -(JoystickView*)directionJoystickView{
     if(_directionJoystickView == nil){
-        JoystickView * joystickView = [[JoystickView alloc] initWithFrame:CGRectMake(kWidth-250-10, kHeight-250-10, 250, 250)];
+        JoystickView * joystickView = [[JoystickView alloc] initWithFrame:CGRectMake(kWidth-250-30, kHeight-250-60, 250, 250)];
         //joystickView.backgroundColor = [UIColor darkGrayColor];
         [joystickView setJoystickTag:kDirectionJoystick];
         [joystickView setPanelBackgroundImage:[UIImage imageNamed:@"JoystickView_DirectionPanel"]];
@@ -1681,7 +1723,7 @@ int reconnectNum = 0;
                 
                 //获取飞控新数据命令
                 if(self.isStreamOpened){
-                    [[JLCtpSender sharedInstanced] dvGenericCommandWith:[[FlyStateModel new] getFlyStatusData] Topic:@"GENERIC_CMD"];
+                    [self sendReadStatus];
                 }
             }
         }
@@ -1787,9 +1829,9 @@ int reconnectNum = 0;
 #pragma JoystickChangeDelegate implememt
 -(void)joystickValueChangedX:(int)valueX Y:(int)valueY Tag:(int)joystickTag flag: (BOOL)flag{
 //    NSLog(@"valueX:%d,valueY:%d,tag:%d",valueX,valueY,joystickTag);
-    if (_moreBtn.isSelected && flag) {
-        [self moreBtnAction];
-    }
+//    if (flyType == 0x06 && flag) { // 如果是跟随模式
+//        [self moreBtnAction];
+//    }
     if(joystickTag == kOilJoystick){
         [FlyCtrlModel sharedInstance].yaw = valueX;
         [FlyCtrlModel sharedInstance].throttle = valueY;
@@ -1924,9 +1966,6 @@ int reconnectNum = 0;
     //NSString *str = [NSString stringWithFormat:@" %@:%@",kDV_TXT(@"状态"),kDV_TXT(@"在线")];
     //_stateLabel.text = str;
     self.isTcpConnected = YES;
- 
-//    //初始化设备设置
-//    [self initDeviceSetting];
     
     //初始化相机参数设置
     [self initCameraParam];
@@ -1936,21 +1975,9 @@ int reconnectNum = 0;
 }
 
 -(void)initDeviceSetting{
-    //关闭录像时间水印
-//    [[JLCtpSender sharedInstanced] dvVideoDateSetWithStatus:0];
-
-    //修改心跳包
-//    [[JLCtpSender sharedInstanced] dvReSetHeartSend:1 WithTimeOut:1 TimeOutFrequency:8 WithType:YES];//3
-    
-    //test
+    self.isStreamOpened = YES;
     //停掉原有心跳包
     [[JLCtpSender sharedInstanced] dvDidStopSendHeartBeat];
-    
-    
-//  [self getCameraParam];
-    
-    //初始化相机参数
-    //[self initCameraParam];
 }
 
 #pragma mark -- 初始化相机参数
@@ -2012,7 +2039,6 @@ int reconnectNum = 0;
 
 -(void)deviceDescriptionTxtNotice:(NSNotification*)notice{
     NSLog(@"deviceDescriptionTxtNotice...");
-    //[self openRealStream];
 }
 
 NSDictionary *responseStatusDict;
@@ -2035,32 +2061,116 @@ int tempRecordFlag = -1;
                 return;
             } else if ([cmdStr intValue] == 0x65) {
                 int height = [flightStatusDict[@"D16"] intValue] | ([flightStatusDict[@"D17"] intValue] << 8);
-                _heightLabel.text = [NSString stringWithFormat:@"Height: %.1fm", height * 0.1f];
+                if (height > 20000) {
+                    height = 0;
+                }
+                [self refreshHeight:height];
                 int distance = [flightStatusDict[@"D13"] intValue] | ([flightStatusDict[@"D14"] intValue] << 8);
-                _distanceLabel.text = [NSString stringWithFormat:@"Distance: %.1fm", distance * 0.1f];
                 int speedV = [flightStatusDict[@"D18"] intValue];
-                _speedVLabel.text = [NSString stringWithFormat:@"speed V: %.1fm/s", speedV * 0.1f];
+                char sV = speedV & 0xff;
+                [self refreshSpeedV:(int)sV];
                 int speedH = [flightStatusDict[@"D15"] intValue];
-                _speedHLabel.text = [NSString stringWithFormat:@"speed H: %.1fm/s", speedH * 0.1f];
+                [self refreshSpeedH:speedH];
                 int planet = [flightStatusDict[@"D19"] intValue];
                 _planetLabel.text = [NSString stringWithFormat:@"%d", planet];
-                int latitude = [flightStatusDict[@"D25"] intValue] | ([flightStatusDict[@"D26"] intValue] << 8) | ([flightStatusDict[@"D27"] intValue] << 16) | ([flightStatusDict[@"D28"] intValue] << 24);
-                _eLabel.text = [NSString stringWithFormat:@"E: %.2f", latitude * 0.0000001f];
-                int longitude = [flightStatusDict[@"D21"] intValue] | ([flightStatusDict[@"D22"] intValue] << 8) | ([flightStatusDict[@"D23"] intValue] << 16) | ([flightStatusDict[@"D24"] intValue] << 24);
-                _nLabel.text = [NSString stringWithFormat:@"N: %.2f", longitude * 0.0000001f];
+                if (planet < 8) {
+                    _bgImageView.image = [UIImage imageNamed:@"bg021"];
+                } else {
+                    _bgImageView.image = [UIImage imageNamed:@"bg022"];
+                }
+                receiveLatitude = [flightStatusDict[@"D25"] intValue] | ([flightStatusDict[@"D26"] intValue] << 8) | ([flightStatusDict[@"D27"] intValue] << 16) | ([flightStatusDict[@"D28"] intValue] << 24);
+                //_eLabel.text = [NSString stringWithFormat:@"E: %.2f", receiveLatitude * 0.0000001f];
+                receiveLongitude = [flightStatusDict[@"D21"] intValue] | ([flightStatusDict[@"D22"] intValue] << 8) | ([flightStatusDict[@"D23"] intValue] << 16) | ([flightStatusDict[@"D24"] intValue] << 24);
+                //_nLabel.text = [NSString stringWithFormat:@"N: %.2f", receiveLongitude * 0.0000001f];
+                [self refreshDistance:distance];
                 int roll = [flightStatusDict[@"D6"] intValue] | ([flightStatusDict[@"D7"] intValue] << 8);
-                _rollLabel.text = [NSString stringWithFormat:@"Roll: %.1f", roll * 0.1f];
+                //_rollLabel.text = [NSString stringWithFormat:@"Roll: %.1f", roll * 0.1f];
                 int pitch = [flightStatusDict[@"D8"] intValue] | ([flightStatusDict[@"D9"] intValue] << 8);
-                _patchLabel.text = [NSString stringWithFormat:@"Pitch: %.1f", pitch * 0.1f];
+                //_patchLabel.text = [NSString stringWithFormat:@"Pitch: %.1f", pitch * 0.1f];
                 int yaw = [flightStatusDict[@"D10"] intValue] | ([flightStatusDict[@"D11"] intValue] << 8);
-                _yawLabel.text = [NSString stringWithFormat:@"Yaw: %.1f", yaw * 0.1f];
+                short int sYaw = yaw;
+                //_yawLabel.text = [NSString stringWithFormat:@"Yaw: %.1f", yaw * 0.1f];
                 int lock = [flightStatusDict[@"D12"] intValue] & 0x0f;
                 flyType = ([flightStatusDict[@"D12"] intValue] >> 4) & 0x0f;
                 flyStatus = [flightStatusDict[@"D12"] intValue] & 0x0f;
                 NSArray * arrFlyType = @[@"", @"悬停模式", @"起飞模式", @"降落模式", @"返航模式",@"航点模式", @"跟随模式", @"环绕模式", @"自稳模式" ];
                 NSArray * arrFlyStatus = @[@"已上锁", @"已解锁未起飞", @"已解锁已起飞", @"失控返航", @"一级返航", @"二级返航", @"一键返航", @"低压降落", @"一键降落", @"一键起飞", @"陀螺仪校准", @"磁力计校准"];
                 if ((int)flyType >=0 && (int)flyType < arrFlyType.count && (int)flyStatus >= 0 && (int)flyStatus < arrFlyStatus.count) {
-                    _stateLabel.text = [NSString stringWithFormat:@"状态：%@ %@", arrFlyType[(int)flyType], arrFlyStatus[(int)flyStatus]];
+                    
+                }
+                _stateLabel.text = [NSString stringWithFormat:@"%d %.2f %.2f %d", [flightStatusDict[@"D12"] intValue], receiveLatitude * 0.0000001f, receiveLongitude * 0.0000001f, sYaw];
+                if (flyStatus == 0x02) { // 已起飞
+                    [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff_landing"] forState:UIControlStateNormal];
+                    [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff_landing_h"] forState:UIControlStateHighlighted];
+                } else if (flyStatus == 0x00) { // 未起飞
+                    [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff"] forState:UIControlStateNormal];
+                    [_takeoffOrLandingBtn setImage:[UIImage imageNamed:@"gd_takeoff_h"] forState:UIControlStateHighlighted];
+                }
+                if (flyBackCount > 0) {
+                    if (flyType == 0x04) { // 返航模式
+                        flyBackCount = 0;
+                    } else {
+                        if (flyBackCount > 3) {
+                            flyBackCount = 0;
+                            return;
+                        }
+                        [self voyageHomeBtnClick]; // 一键返航
+                    }
+                }
+                if (cancelFlyBackCount > 0) {
+                    if (flyType == 0x04) { // 返航模式
+                        if (cancelFlyBackCount > 3) {
+                            cancelFlyBackCount = 0;
+                            return;
+                        }
+                        [self voyageHomeBtnClick]; // 一键返航
+                    } else {
+                        cancelFlyBackCount = 0;
+                    }
+                }
+                
+                if (flyType == 0x04) { // 返航模式
+                    [_turnbackBtn setSelected:YES];
+                } else { // 非返航模式
+                    [_turnbackBtn setSelected:NO];
+                }
+                
+                if (flyFollowCount > 0) { // 跟随数量判断
+                    if (flyType == 0x06) { // 跟随模式
+                        flyFollowCount = 0; // 清空跟随数量计数
+                    } else { // 非跟随模式
+                        if (flyFollowCount > 3) { // 如果跟随数量计数大于3
+                            flyFollowCount = 0; // 清空跟随数量计数
+                            return;
+                        } // 如果小于3，则再发一次跟随
+                        [self moreBtnAction]; // 执行跟随方法
+                    }
+                }
+                if (cancelFlyFollowCount > 0) {
+                    if (flyType == 0x06) { // 跟随模式
+                        if (cancelFlyFollowCount > 3) {
+                            cancelFlyFollowCount = 0;
+                            return;
+                        }
+                        [self moreBtnAction]; // 取消跟随
+                    } else {
+                        cancelFlyFollowCount = 0;
+                    }
+                }
+                
+                if (flyType == 0x06) {
+                    [_moreBtn setSelected:YES];
+                } else {
+                    [_moreBtn setSelected:NO];
+                }
+                
+                if (latitude != 0 && longitude != 0) {
+                    double angle = [self getAngle1:latitude * 0.0000001 lng:longitude * 0.0000001 latb:receiveLongitude * 0.0000001 lngb:receiveLatitude * 0.0000001];
+                    int i = (int)(angle / (M_PI / 8));
+                    CGFloat angle1 = -i * M_PI / 8 - M_PI / 2;
+                    self.northSouthImageView.transform = CGAffineTransformMakeRotation(angle1);
+                    CGFloat angle2 = -(sYaw / 1800.0) * M_PI - angle1;
+                    self.northSouthArrowImageView.transform = CGAffineTransformMakeRotation(angle2);
                 }
                 
                 if (lock == 0) {
@@ -2085,7 +2195,11 @@ int tempRecordFlag = -1;
                     [_batteryStateView setImage:_batteryImg1];
                     self.isLowBattery = NO;
                 }
-                
+                if (temFlag) {
+                    return;
+                }
+                temFlag = YES;
+                [self startLocation]; // 启动定位功能
                 return;
             } else if ([cmdStr intValue] == 0xA0) {
                 int value = [flightStatusDict[@"D6"] intValue];
@@ -2247,9 +2361,7 @@ int tempRecordFlag = -1;
     _locationManager.delegate = self;
     
     [_locationManager startUpdatingLocation];
-    isJoystickSwitchON = NO;
-    [self removeFlyCtrlTimer];
-    [self startFlyFollowTimer];
+    
 }
 
 
@@ -2264,6 +2376,67 @@ int tempRecordFlag = -1;
     
     latitude = location.coordinate.latitude * 10000000;
     longitude= location.coordinate.longitude * 10000000;
+}
+
+- (double)calculateDistance: (int)sltd send_lgd:(int)slgd receive_ltd:(int)rltd receive_lgd:(int)rlgd {
+    CLLocationCoordinate2D coor[2] = {0};
+    coor[0].latitude = (double)sltd * 0.0000001;
+    coor[0].longitude = (double)slgd * 0.0000001;
+    coor[1].latitude = (double)rltd * 0.0000001;
+    coor[1].longitude = (double)rlgd * 0.0000001;
+    double dis = [self calculateStart:coor[0] end:coor[1]];
+    return dis;
+}
+
+- (double)calculateStart:(CLLocationCoordinate2D)start end:(CLLocationCoordinate2D)end {
+    
+    double EARTH_RADIUS = 6378137;
+    
+    double meter =0;
+    
+    double startLongitude = start.longitude;
+    
+    double startLatitude = start.latitude;
+    
+    double endLongitude = end.longitude;
+    
+    double endLatitude = end.latitude;
+    
+    double radLatitude1 = startLatitude *M_PI/180.0;
+    
+    double radLatitude2 = endLatitude *M_PI/180.0;
+    
+    double a =fabs(radLatitude1 - radLatitude2);
+    
+    double b =fabs(startLongitude *M_PI/180.0- endLongitude *M_PI/180.0);
+    
+    double s =2*asin(sqrt(pow(sin(a/2),2) +cos(radLatitude1) *cos(radLatitude2) *pow(sin(b/2),2)));
+    
+    s = s * EARTH_RADIUS;
+    
+    meter =round(s *10000) /10000;//返回距离单位是米
+    
+    return meter;
+    
+}
+
+/**
+ *
+ * @param lat_a 纬度1
+ * @param lng_a 经度1
+ * @param lat_b 纬度2
+ * @param lng_b 经度2
+ * @return 1
+ */
+- (double)getAngle1: (double)lat_a lng:(double)lng_a latb: (double)lat_b lngb:(double)lng_b {
+    
+    double y = sin(lng_b-lng_a) * cos(lat_b);
+    double x = cos(lat_a) * sin(lat_b) - sin(lat_a) * cos(lat_b) * cos(lng_b-lng_a);
+    double bearing = atan2(y, x);
+    if (bearing < 0) {
+        bearing = M_PI * 2 + bearing;
+    }
+    return bearing;
     
 }
 

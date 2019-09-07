@@ -48,14 +48,42 @@ static FlyCtrlModel *instance;
     serialdata[3] = 0x6A;
     serialdata[4] = 0x04;
     serialdata[5] = 0x00;
+    int pitch = 256-(_pitch + 1000)*0.128;
+    if (pitch > 255) {
+        pitch = 255;
+    }
+    if (pitch < 0) {
+        pitch = 0;
+    }
     //pitch
-    serialdata[6] = 256-(_pitch + 1000)*0.128;
+    serialdata[6] = pitch;
+    int roll = (_roll + 1000)*0.128;
+    if (roll > 255) {
+        roll = 255;
+    }
+    if (roll < 0) {
+        roll = 0;
+    }
     //roll
-    serialdata[7] = (_roll + 1000)*0.128;
+    serialdata[7] = roll;
+    int throttle = 256-(_throttle + 1000)*0.128;
+    if (throttle > 255) {
+        throttle = 255;
+    }
+    if (throttle < 0) {
+        throttle = 0;
+    }
     //throttle
-    serialdata[8] = 256-(_throttle + 1000)*0.128;//256-(valueY+1000)*256/2000;
+    serialdata[8] = throttle;
+    int yaw = (_yaw + 1000)*0.128;
+    if (yaw > 255) {
+        yaw = 255;
+    }
+    if (yaw < 0) {
+        yaw = 0;
+    }
     //yaw
-    serialdata[9] = (_yaw + 1000)*0.128;
+    serialdata[9] = yaw;
     serialdata[10] = [self checkSum:serialdata len:11];
     
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithCapacity:2];
@@ -69,6 +97,7 @@ static FlyCtrlModel *instance;
         [sub_data setValue:value forKey:key];
     }
 
+    NSLog(@"数据：%@", sub_data);
     
     [data setValue:sub_data forKey:@"param"];
 
@@ -76,7 +105,7 @@ static FlyCtrlModel *instance;
 }
 
 
-// 长度 功能，数据
+// 长度 功能，数据 latitude === 22.5694  longitude === 113.954
 -(unsigned char) checkSum: (unsigned char[]) arry len:(int) len {
     unsigned char checkSum = 0x00;
     

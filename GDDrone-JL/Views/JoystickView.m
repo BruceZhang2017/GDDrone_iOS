@@ -8,6 +8,7 @@
 
 #import "JoystickView.h"
 
+static int kDeadValue = 200;
 
 @interface JoystickView()
 @property (nonatomic, weak) UIImageView *sliderIv;
@@ -84,10 +85,10 @@ CGPoint touchDownPoint;
         //计算按下点到中心点的X，Y距离
         _offsetX = touchDownPoint.x - self.panelIv.center.x;
         _offsetY = touchDownPoint.y - self.panelIv.center.y;
+        NSLog(@"valueX:%f,valueY:%f",_offsetX,_offsetY);
     }
     
     CGPoint currPoint = CGPointMake(currTouchPoint.x - _offsetX, currTouchPoint.y - _offsetY);
-    
     //计算currPoint到中心点的距离
     int distance = [self calculateDistanceFromPoint:currPoint ToPoint:self.panelIv.center];
     if(distance > self.panelRadius){
@@ -116,7 +117,17 @@ CGPoint touchDownPoint;
     
     int valueX = (currPoint.x - self.panelIv.center.x) * 1000 / (_panelRadius);
     int valueY = (currPoint.y - self.panelIv.center.y) * 1000 / (_panelRadius);
-//    NSLog(@"valueX:%d,valueY:%d",valueX,valueY);
+    if ((valueX < kDeadValue && valueX > -kDeadValue) && (valueY > kDeadValue || valueY < -kDeadValue)) {
+        valueX = 0;
+    }
+    if ((valueY < kDeadValue && valueY > -kDeadValue) && (valueX > kDeadValue || valueX < -kDeadValue)) {
+        valueY = 0;
+    }
+    if ((valueX < kDeadValue && valueX > -kDeadValue) && (valueY < kDeadValue && valueY > -kDeadValue)) {
+        valueX = 0;
+        valueY = 0;
+    }
+    NSLog(@"valueX:%d,valueY:%d",valueX,valueY);
     if([_delegate respondsToSelector:@selector(joystickValueChangedX:Y:Tag:flag:)]){
         [self.delegate joystickValueChangedX:valueX Y:valueY Tag:self.jaystickTag flag: YES];
     }
@@ -143,7 +154,7 @@ CGPoint touchDownPoint;
                 y = velocity * (y / r);
             }
             
-            if ((x < 100 && x > -100 ) &&(y < 100 && y > -100) ) {
+            if ((x < kDeadValue && x > -kDeadValue ) &&(y < kDeadValue && y > -kDeadValue) ) {
                 x = 0;
                 y = 0;
             }
